@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bus Tracking Prototype</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Launch Screen -->
+      <section id="screen-launch" class="screen visible">
+        <div class="center-wrap">
+          <div class="logo">🚌</div>
+          <h1>Bus Track</h1>
+          <p class="tagline">Real-time arrivals for your route</p>
+          <button id="btn-get-started" class="primary">Get started</button>
+        </div>
+      </section>
+
+      <!-- Select Screen -->
+      <section id="screen-select" class="screen">
+        <header class="topbar">
+          <button id="back-to-launch" class="icon-btn" aria-label="Back">←</button>
+          <h2 class="title">Select Route</h2>
+        </header>
+        <div class="content">
+          <label class="field">
+            <span>City</span>
+            <select id="select-city"></select>
+          </label>
+          <label class="field">
+            <span>Route</span>
+            <select id="select-route"></select>
+          </label>
+          <label class="field">
+            <span>Stop</span>
+            <select id="select-stop"></select>
+          </label>
+          <button id="btn-search" class="primary full">Search</button>
+        </div>
+      </section>
+
+      <!-- Arrivals Screen -->
+      <section id="screen-arrivals" class="screen">
+        <header class="topbar">
+          <button id="back-to-select" class="icon-btn" aria-label="Back">←</button>
+          <h2 class="title">Arrivals</h2>
+        </header>
+        <div class="content">
+          <div id="selected-context" class="context"></div>
+          <div id="arrivals-list" class="list"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="modal-backdrop" data-modal-close></div>
+      <div class="modal-card" role="document">
+        <header class="modal-header">
+          <h3 id="modal-title">Bus Details</h3>
+          <button class="icon-btn" data-modal-close aria-label="Close">✕</button>
+        </header>
+        <div id="modal-body" class="modal-body"></div>
+        <footer class="modal-footer">
+          <button class="primary" data-modal-close>Close</button>
+        </footer>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+  </html>
+
