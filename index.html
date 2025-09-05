@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bus Tracker Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app-root">
+      <!-- Launch Screen -->
+      <section id="screen-launch" class="screen active" aria-labelledby="launch-title">
+        <div class="splash">
+          <div class="logo-circle" aria-hidden="true">🚌</div>
+          <h1 id="launch-title">City Bus</h1>
+          <p class="tagline">Track your bus in real time</p>
+          <button id="btn-get-started" class="primary">Get started</button>
+        </div>
+      </section>
+
+      <!-- Route / Bus Selection Screen -->
+      <section id="screen-select" class="screen" aria-labelledby="select-title" hidden>
+        <header class="app-header">
+          <button id="btn-back-from-select" class="icon-button" aria-label="Back" title="Back">
+            ←
+          </button>
+          <h2 id="select-title">Select a route</h2>
+        </header>
+
+        <div class="content">
+          <div class="card">
+            <label for="route-select" class="field-label">Route</label>
+            <select id="route-select" class="select-field" aria-label="Route selection">
+              <option value="" selected disabled>Select route…</option>
+            </select>
+            <div class="field-hint">Or search by bus number below.</div>
+
+            <label for="bus-search" class="field-label">Bus number (optional)</label>
+            <input id="bus-search" class="text-field" type="text" inputmode="numeric" placeholder="e.g. 12A" aria-label="Search by bus number" />
+
+            <button id="btn-search" class="primary full-width" disabled>Search</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Screen -->
+      <section id="screen-results" class="screen" aria-labelledby="results-title" hidden>
+        <header class="app-header">
+          <button id="btn-back-from-results" class="icon-button" aria-label="Back" title="Back">
+            ←
+          </button>
+          <h2 id="results-title">Incoming buses</h2>
+        </header>
+
+        <!-- Top-right info panel -->
+        <aside id="next-bus-panel" class="panel" aria-live="polite" aria-atomic="true">
+          <div class="panel-title">Next bus</div>
+          <div class="panel-body">
+            <div class="stat">
+              <div class="stat-label">Bus</div>
+              <div class="stat-value" id="panel-bus-number">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Arrives</div>
+              <div class="stat-value" id="panel-arrival-time">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Delay</div>
+              <div class="stat-value" id="panel-delay">—</div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="content">
+          <div id="results-route-title" class="route-title">Route —</div>
+          <ul id="bus-list" class="bus-list" aria-label="Buses on this route">
+            <!-- Rows injected by JS -->
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bus Details Modal -->
+    <div id="modal-overlay" class="modal-overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h3 id="modal-title">Bus details</h3>
+          <button id="modal-close" class="icon-button" aria-label="Close details">✕</button>
+        </div>
+        <div id="modal-content" class="modal-content"></div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+  </html>
