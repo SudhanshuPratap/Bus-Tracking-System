@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CityBus Tracker — Prototype</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50%' x='50%' dominant-baseline='middle' text-anchor='middle' font-size='44'>🚌</text></svg>">
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="description" content="Bus tracking prototype: launch, select, and results screens" />
+</head>
+<body>
+  <main id="app">
+    <!-- Screen 1: Launch -->
+    <section id="screen-launch" class="screen active" aria-labelledby="launch-title">
+      <div class="launch-hero">
+        <div class="logo">🚌</div>
+        <h1 id="launch-title">CityBus Tracker</h1>
+        <p class="subtitle">Find your next bus in seconds.</p>
+        <button id="btn-start" class="btn primary">Get started</button>
+      </div>
+      <footer class="launch-footer">Prototype • No real-time data</footer>
+    </section>
+
+    <!-- Screen 2: Route/Bus Selection -->
+    <section id="screen-select" class="screen" aria-labelledby="select-title">
+      <header class="topbar">
+        <button id="back-to-launch" class="icon-btn" aria-label="Back to launch">←</button>
+        <h2 id="select-title">Choose your route</h2>
+      </header>
+
+      <div class="content form">
+        <div class="field">
+          <label for="routeSelect">Route</label>
+          <select id="routeSelect" aria-label="Select a route"></select>
+        </div>
+
+        <div class="field">
+          <label for="stopSelect">Stop / Location</label>
+          <select id="stopSelect" aria-label="Select a stop"></select>
+        </div>
+
+        <button id="btn-search" class="btn primary full">Search</button>
+      </div>
+    </section>
+
+    <!-- Screen 3: Results -->
+    <section id="screen-results" class="screen" aria-labelledby="results-title">
+      <header class="topbar">
+        <button id="back-to-select" class="icon-btn" aria-label="Back to selection">←</button>
+        <h2 id="results-title">Incoming buses</h2>
+      </header>
+
+      <!-- Top-right arrival summary box -->
+      <aside class="summary-box" id="summaryBox" aria-live="polite">
+        <div class="summary-title">Next arrival</div>
+        <div class="summary-main">
+          <span id="summaryBus">—</span>
+          <span class="dot">•</span>
+          <span id="summaryEta">—</span>
+        </div>
+        <div class="summary-sub">
+          <span id="summaryStop">—</span>
+          <span class="dot">•</span>
+          <span id="summaryDelay">On time</span>
+        </div>
+      </aside>
+
+      <div class="content">
+        <div id="resultsMeta" class="meta"></div>
+        <ul id="busList" class="card-list" aria-label="Buses for selected route"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bus details modal -->
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-content" role="document">
+      <header class="modal-header">
+        <h3 id="modalTitle">Bus details</h3>
+        <button id="modalClose" class="icon-btn" aria-label="Close">✕</button>
+      </header>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+  
+</body>
+</html>
+
