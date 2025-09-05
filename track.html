@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Bus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+  <style>
+    #map{height:calc(100vh - 56px);} /* navbar height */
+    .info-box{
+      position:absolute;
+      top:70px;
+      right:15px;
+      z-index:1000;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar bg-primary navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="select.html">Back</a>
+      <span class="navbar-text" id="routeTitle"></span>
+    </div>
+  </nav>
+  <div class="info-box card shadow" style="width:18rem;display:none;" id="busInfoCard">
+    <div class="card-body">
+      <h5 class="card-title">Bus <span id="busNumber"></span> <button class="btn btn-sm btn-outline-secondary" id="detailsBtn">i</button></h5>
+      <p class="card-text mb-1">Arrival: <span id="arrivalTime"></span></p>
+      <p class="card-text">Delay: <span id="delayTime"></span></p>
+    </div>
+  </div>
+  <div id="map"></div>
+
+  <!-- modal -->
+  <div class="modal fade" id="busDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Bus details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="busDetailsBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const routeId = params.get('route');
+    const routeNames = {1:'Downtown Loop',2:'Uptown Express',3:'Suburb Connector'};
+    document.getElementById('routeTitle').textContent = `Route ${routeId} - ${routeNames[routeId]}`;
+
+    // init map
+    const map = L.map('map').setView([37.7749,-122.4194],13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:'© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // simulate bus marker
+    const busMarker = L.marker([37.7749,-122.4194]).addTo(map);
+    let shown = false;
+
+    function updateInfo(arrival, delay, busNo){
+      document.getElementById('busNumber').textContent = busNo;
+      document.getElementById('arrivalTime').textContent = arrival;
+      document.getElementById('delayTime').textContent = delay || 'On time';
+      document.getElementById('busInfoCard').style.display='block';
+    }
+
+    function fetchBusData(){
+      // dummy data; in real app, fetch from API
+      const now = new Date();
+      const arrival = new Date(now.getTime() + 5*60000); // 5 minutes later
+      const delayMin = Math.random()>0.7 ? Math.floor(Math.random()*5+1):0;
+      const arrivalStr = arrival.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      const delayStr = delayMin? `${delayMin} min` : '';
+      const busNo = `${routeId}0${Math.floor(Math.random()*9)}`;
+      updateInfo(arrivalStr,delayStr,busNo);
+      // move marker randomly
+      const offsetLat = (Math.random()-0.5)/100;
+      const offsetLng = (Math.random()-0.5)/100;
+      const latlng = busMarker.getLatLng();
+      const newLatLng = [latlng.lat+offsetLat,latlng.lng+offsetLng];
+      busMarker.setLatLng(newLatLng);
+      if(!shown){
+        map.setView(newLatLng,13);
+        shown=true;
+      }
+    }
+    fetchBusData();
+    setInterval(fetchBusData,5000);
+
+    // info button
+    document.getElementById('detailsBtn').addEventListener('click',()=>{
+      const body = document.getElementById('busDetailsBody');
+      body.innerHTML = `<p>Bus No: <strong>${document.getElementById('busNumber').textContent}</strong></p><p>Route: ${routeNames[routeId]}</p><p>Features: AC, WiFi</p>`;
+      const modal = new bootstrap.Modal(document.getElementById('busDetailsModal'));
+      modal.show();
+    });
+  </script>
+</body>
+</html>
